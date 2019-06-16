@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
-import { Button } from 'antd';
+import { Button, Dropdown, Icon, Menu } from 'antd';
 import axios from '../../config/axios'
+import history from '../../config/history'
+import Todos from '../Todos/Todos'
+
+import './Index.scss'
 
 interface IRouter {
   history: any;
@@ -9,6 +13,25 @@ interface IRouter {
 interface IUser {
   user: any
 }
+
+const logOut = () =>  {
+  localStorage.setItem('x-token', '')
+  history.push('login')
+}
+
+const menu = (
+  <Menu>
+    <Menu.Item key="1">
+      <Icon type="user" />
+      个人设置
+    </Menu.Item>
+    <Menu.Item key="2" onClick={logOut}>
+      <Icon type="logout" />
+      注销
+    </Menu.Item>
+  </Menu>
+)
+
 class Index extends Component<IRouter, IUser> {
   constructor (props: any) {
     super(props)
@@ -22,16 +45,22 @@ class Index extends Component<IRouter, IUser> {
     this.setState({user: res.data})
   }
 
-  logOut = () =>  {
-    localStorage.setItem('x-token', '')
-    this.props.history.push('login')
-  }
-
   render() {
     return (
-      <div>
-        <p>hello {this.state.user.account}</p>
-        <Button onClick={this.logOut}>注销</Button>
+      <div className="index-wrapper">
+        <header>
+          <span>logo</span>
+          <div>
+            <Dropdown overlay={menu}>
+              <Button>
+                {this.state.user.account}<Icon type="down" />
+              </Button>
+            </Dropdown> 
+          </div>
+        </header>
+        <main>
+         <Todos/>
+        </main> 
       </div>
     );
   }
