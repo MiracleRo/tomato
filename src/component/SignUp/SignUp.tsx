@@ -30,11 +30,15 @@ class SignUp extends Component<any, ISignUp> {
   submit = async () => {
     const { account, password, passwordConfirmation } = this.state;
     try {
-      await axios.post('sign_up/user', {
+      const res = await axios.post('sign_up/user', {
         account,
         password,
         password_confirmation: passwordConfirmation
       })
+      if (res.status === 200) {
+        this.props.history.push('/')
+      }
+      console.log(res)
     } catch (e) {
       console.log(e)
     }
