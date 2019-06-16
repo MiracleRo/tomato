@@ -1,4 +1,5 @@
 import axios from 'axios'
+import history from './history'
 
 const appId = 'i3skc6kDX5cUQjvjhY4XRsVi'
 const appSecret = 'HwjwE4Q9nAnZJ2BMNfWY1NMi'
@@ -29,7 +30,10 @@ instance.interceptors.response.use(response => {
   }
   return response;
 }, error => {
-  console.log(error)
+  if (error.response.status === 401) {
+    console.log('登录失败!')
+    history.push('login')
+  }
   return Promise.reject(error);
 });
 
