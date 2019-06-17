@@ -10,14 +10,15 @@ class Todos extends Component<any, any> {
   constructor(props:any) {
     super(props)
     this.state = {
-      resources: [] 
+      todos: []
     }
   }
 
   async componentWillMount () {
     const res = await axios.get('todos')
+    const list =  res.data.resources.map((item: any) => Object.assign(item, {editing: false}))
     this.setState({
-      resources: res.data.resources
+      todos: list
     })
   }
 
@@ -30,9 +31,37 @@ class Todos extends Component<any, any> {
     
   }
 
+  updateTodo = async (id: number, params: boolean) => {
+    const res = await axios.put(`todos/${id}`, params)
+    const resId = res.data.id
+    let newTodo = this.state.todos.map((item: any) => {
+      if (item.id === resId) {
+        return res.data.resource
+      } else {
+        return item
+      }
+    })
+    newTodo = newTodo.map((item: any) => Object.assign(item, {editing: false}))
+    this.setState({todos: newTodo})
+  }
+
+  edit = (id: number) => {
+    const {todos} = this.state
+    const list = todos.map((item: any) => {
+      if (item.id === id) {
+        return Object.assign(item, {editing: true})
+      } else {
+        return Object.assign(item, {editing: false})
+      }
+    })
+    this.setState({
+      todos: list
+    })
+  }
+
   render() {
-    const items =  this.state.resources.map((item:any) =>
-      <TodoItem key={item.id} info={item} />
+    const items =  this.state.todos.map((item:any) =>
+      <TodoItem key={item.id} {...item} updateTodo={this.updateTodo} edit={this.edit} />
     )
 
     return (
