@@ -1,12 +1,15 @@
-import { ADD_TODO } from '../actionType'
+import { ADD_TODO, INIT_TODO } from '../actionType'
 
-const todos = (state = [], action: any) => {
+export default (state = [], action: any) => {
+  console.log(1111111111)
   switch (action.type) {
     case ADD_TODO:
-      return [...state, ...action.payload]
+      return [...state, Object.assign(action.payload, {editing: false})]
+    case INIT_TODO:
+      return [...action.payload.map((item: any) => Object.assign(item, {editing: false}))]
     default:
       return state
   }
 }
 
-export default todos
+// export default todos

@@ -1,5 +1,5 @@
-import { ADD_TODO } from './actionType'
+import { ADD_TODO, INIT_TODO } from './actionType'
 
-export function addTodo(todo: any[]) {
-  return { type: ADD_TODO, todo }
-}
+export const addTodo = (payload: any) => ({ type: ADD_TODO, payload })
+
+export const initTodo = (payload: any[]) => ({ type: INIT_TODO, payload })

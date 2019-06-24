@@ -2,35 +2,31 @@ import React, { Component } from 'react'
 import TodoInput from './TodoInput'
 import TodoItem from './TodoItem'
 import axios from '../../config/axios'
+import { connect } from 'react-redux'
+import { initTodo } from '../../redux/action'
 
 import './Todos.scss'
 
 class Todos extends Component<any, any> {
   constructor(props:any) {
     super(props)
-    this.state = {
-      todos: []
-    }
   }
 
   async componentWillMount () {
     const res = await axios.get('todos')
-    const list =  res.data.resources.map((item: any) => Object.assign(item, {editing: false}))
-    this.setState({
-      todos: list
-    })
+    this.props.initTodo(res.data.resources)
   }
 
   updateTodo = async (id: number, params: boolean) => {
     const res = await axios.put(`todos/${id}`, params)
     const resId = res.data.resource.id
-    const newTodo = this.state.todos.map((item: any) => item.id === resId ? 
+    const newTodo = this.props.todos.map((item: any) => item.id === resId ? 
     Object.assign(res.data.resource, {editing: false}) : Object.assign(item, {editing: false}))
     this.setState({todos: newTodo})
   }
 
   get unDeletedTodos () {
-    return this.state.todos.filter((item: any) => !item.deleted)
+    return this.props.todos.filter((item: any) => !item.deleted)
   }
 
   get unCompletedTodos () {
@@ -42,7 +38,7 @@ class Todos extends Component<any, any> {
   }
 
   edit = (id: number) => {
-    const {todos} = this.state
+    const {todos} = this.props
     const list = todos.map((item: any) => {
       if (item.id === id) {
         return Object.assign(item, {editing: true})
@@ -71,4 +67,16 @@ class Todos extends Component<any, any> {
   }
 }
 
-export default Todos
+const mapStateToProps = (state: any, ownProps: any) => ({
+  todos: state.todos,
+	...ownProps
+})
+
+const mapDispatchToProps = {
+  initTodo
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Todos)

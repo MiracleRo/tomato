@@ -8,6 +8,10 @@ interface IState {
   description: string
 }
 
+// interface ITodoInputProps {
+// 	addTodo: (payload:any) => any;
+// }
+
 class Todos extends Component<any, IState> {
   constructor(props:any) {
     super(props)
@@ -20,7 +24,7 @@ class Todos extends Component<any, IState> {
     if (this.state.description !== '') {
       try {
         const res = await axios.post('todos', {description: this.state.description})
-        this.props.addTodo(Object.assign(res.data.resource, {editing: false}))
+        this.props.addTodo(res.data.resource)
         this.setState({description: ''})
       } catch(e) {
         throw new Error(e)
@@ -46,8 +50,13 @@ class Todos extends Component<any, IState> {
   }
 }
 
-const mapDispatchToProps = (dispatch: any) => ({
-  addTodo
+const mapStateToProps = (state: any, ownProps: any) => ({
+	...ownProps
 })
 
-export default connect(mapDispatchToProps)(Todos)
+
+const mapDispatchToProps = {
+  addTodo
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Todos)
