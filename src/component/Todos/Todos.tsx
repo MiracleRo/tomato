@@ -3,7 +3,6 @@ import TodoInput from './TodoInput'
 import TodoItem from './TodoItem'
 import axios from '../../config/axios'
 
-
 import './Todos.scss'
 
 class Todos extends Component<any, any> {
@@ -20,20 +19,6 @@ class Todos extends Component<any, any> {
     this.setState({
       todos: list
     })
-  }
-
-  addTodo = async (params: any) => {
-    try {
-      const res = await axios.post('todos', params)
-      let list = [res.data.resource, ...this.state.todos]
-      list = list.map((item: any) => Object.assign(item, {editing: false}))
-      this.setState({
-        todos: list
-      }) 
-    } catch (e) {
-      throw new Error(e)
-    }
-    
   }
 
   updateTodo = async (id: number, params: boolean) => {
@@ -74,7 +59,7 @@ class Todos extends Component<any, any> {
 
     return (
       <div className="todos">
-        <TodoInput addTodo={(params: any) => this.addTodo(params)}/>
+        <TodoInput/>
          {   this.unCompletedTodos.map((item:any) =>
              <TodoItem key={item.id} {...item} updateTodo={this.updateTodo} edit={this.edit} />)
          }

@@ -1,15 +1,14 @@
 import React, { Component } from 'react'
 import { Input, Icon } from 'antd';
+import { connect } from 'react-redux'
+import { addTodo } from '../../redux/action'
+import axios from '../../config/axios'
 
 interface IState {
   description: string
 }
 
-interface ITodoProps {
-  addTodo: (params: any) => void
-}
-
-class Todos extends Component<ITodoProps, IState> {
+class Todos extends Component<any, IState> {
   constructor(props:any) {
     super(props)
     this.state = {
@@ -17,16 +16,21 @@ class Todos extends Component<ITodoProps, IState> {
     }
   }
 
-  updateTodo = async () => {
+  postTodo = async () => {
     if (this.state.description !== '') {
-      this.props.addTodo({description: this.state.description})
-      this.setState({description: ''})
+      try {
+        const res = await axios.post('todos', {description: this.state.description})
+        this.props.addTodo(Object.assign(res.data.resource, {editing: false}))
+        this.setState({description: ''})
+      } catch(e) {
+        throw new Error(e)
+      }
     }
   }
 
   render() {
     const { description } = this.state
-    const suffix = description ? <Icon type="enter" onClick={this.updateTodo} /> : <span />
+    const suffix = description ? <Icon type="enter" onClick={this.postTodo} /> : <span />
 
     return (
       <div className="input-wrapper">
@@ -34,7 +38,7 @@ class Todos extends Component<ITodoProps, IState> {
           value={description}
           onChange={(e) => this.setState({description: e.target.value})}
           placeholder="请输入待办项"
-          onPressEnter={this.updateTodo}
+          onPressEnter={this.postTodo}
           suffix={suffix}
          />
       </div>
@@ -42,4 +46,8 @@ class Todos extends Component<ITodoProps, IState> {
   }
 }
 
-export default Todos
+const mapDispatchToProps = (dispatch: any) => ({
+  addTodo
+})
+
+export default connect(mapDispatchToProps)(Todos)
