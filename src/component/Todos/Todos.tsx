@@ -25,18 +25,6 @@ class Todos extends Component<any, any> {
     this.setState({todos: newTodo})
   }
 
-  get unDeletedTodos () {
-    return this.props.todos.filter((item: any) => !item.deleted)
-  }
-
-  get unCompletedTodos () {
-    return this.unDeletedTodos.filter((item: any) => !item.completed) 
-  }
-
-  get completedTodos () {
-    return this.unDeletedTodos.filter((item: any) => item.completed) 
-  }
-
   edit = (id: number) => {
     const {todos} = this.props
     const list = todos.map((item: any) => {
@@ -56,10 +44,10 @@ class Todos extends Component<any, any> {
     return (
       <div className="todos">
         <TodoInput/>
-         {   this.unCompletedTodos.map((item:any) =>
+         {   this.props.unCompletedTodos.map((item:any) =>
              <TodoItem key={item.id} {...item} updateTodo={this.updateTodo} edit={this.edit} />)
          }
-         {   this.completedTodos.map((item:any) =>
+         {   this.props.completedTodos.map((item:any) =>
              <TodoItem key={item.id} {...item} updateTodo={this.updateTodo} edit={this.edit} />)
          }
       </div>
@@ -68,7 +56,8 @@ class Todos extends Component<any, any> {
 }
 
 const mapStateToProps = (state: any, ownProps: any) => ({
-  todos: state.todos,
+  completedTodos: state.todos.filter((item: any) => item.completed),
+  unCompletedTodos: state.todos.filter((item: any) => !item.completed),
 	...ownProps
 })
 
