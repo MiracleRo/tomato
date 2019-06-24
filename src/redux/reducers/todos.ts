@@ -5,21 +5,21 @@ export default (state = [], action: any) => {
     case ADD_TODO:
       return [action.payload, ...state]
     case INIT_TODO:
-      return [...action.payload.filter((item: any) => !item.deleted )]
+      return [...action.payload]
     case UPDATE_TODO:
       return state.map((item: any) => {
         if (item.id === action.payload.id) {
           return action.payload
         } else {
-          return DataTransferItem
+          return item
         }
       })
     case EDIT_TODO:
-      state.forEach((item: any) => {
+      return state.map((item: any) => {
         if (item.id === action.payload) {
-          item.editing = false
+          return Object.assign(item, {editing: true})
         } else {
-          item.editing = true
+          return Object.assign(item, {editing: false})
         }
       })
     default:

@@ -17,38 +17,16 @@ class Todos extends Component<any, any> {
     this.props.initTodo(res.data.resources)
   }
 
-  updateTodo = async (id: number, params: boolean) => {
-    const res = await axios.put(`todos/${id}`, params)
-    const resId = res.data.resource.id
-    const newTodo = this.props.todos.map((item: any) => item.id === resId ? 
-    Object.assign(res.data.resource, {editing: false}) : Object.assign(item, {editing: false}))
-    this.setState({todos: newTodo})
-  }
-
-  edit = (id: number) => {
-    const {todos} = this.props
-    const list = todos.map((item: any) => {
-      if (item.id === id) {
-        return Object.assign(item, {editing: true})
-      } else {
-        return Object.assign(item, {editing: false})
-      }
-    })
-    this.setState({
-      todos: list
-    })
-  }
-
   render() {
 
     return (
       <div className="todos">
         <TodoInput/>
          {   this.props.unCompletedTodos.map((item:any) =>
-             <TodoItem key={item.id} {...item} updateTodo={this.updateTodo} edit={this.edit} />)
+             <TodoItem key={item.id} {...item} />)
          }
          {   this.props.completedTodos.map((item:any) =>
-             <TodoItem key={item.id} {...item} updateTodo={this.updateTodo} edit={this.edit} />)
+             <TodoItem key={item.id} {...item} />)
          }
       </div>
     )
@@ -56,8 +34,8 @@ class Todos extends Component<any, any> {
 }
 
 const mapStateToProps = (state: any, ownProps: any) => ({
-  completedTodos: state.todos.filter((item: any) => item.completed),
-  unCompletedTodos: state.todos.filter((item: any) => !item.completed),
+  completedTodos: state.todos.filter((item: any) => item.completed && !item.deleted),
+  unCompletedTodos: state.todos.filter((item: any) => !item.completed && !item.deleted),
 	...ownProps
 })
 
