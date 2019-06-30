@@ -3,6 +3,7 @@ import { Button, Dropdown, Icon, Menu } from 'antd';
 import axios from '../../config/axios'
 import history from '../../config/history'
 import Todos from '../Todos/Todos'
+import Tomatos from '../Tomatos/Tomatos'
 
 import './Index.scss'
 
@@ -59,7 +60,8 @@ class Index extends Component<IRouter, IUser> {
           </div>
         </header>
         <main>
-         <Todos/>
+          <Tomatos/>
+          <Todos/>
         </main> 
       </div>
     );
