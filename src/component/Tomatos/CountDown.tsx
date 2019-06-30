@@ -2,11 +2,14 @@ import React, { Component } from 'react';
 
 interface ICountDown {
   countdown: number
+  onFinish: () => void
 }
 
 interface ICountDownState {
   timer: number
 }
+
+let counter:any
 
 class CountDown extends Component<ICountDown, ICountDownState> {
   constructor (props: any) {
@@ -24,14 +27,20 @@ class CountDown extends Component<ICountDown, ICountDownState> {
 
 
   componentDidMount () {
-    const counter = setInterval(() => {
-      if (this.state.timer < 0) {
-        clearInterval(counter)
+    counter = setInterval(()=>{
+      const time = this.state.timer
+	    this.setState({timer: time - 1000})
+		  document.title = `${this.countDown} - 番茄APP`;
+	    if(time < 1000){
+		  	document.title = '番茄APP';
+		    this.props.onFinish()
+			  clearInterval(counter)
       }
-      this.setState({
-        timer: this.state.timer - 1000
-      })
-    }, 1000)
+    },1000)
+  }
+
+  componentWillUnmount () {
+    clearInterval(counter)
   }
 
   render() {
