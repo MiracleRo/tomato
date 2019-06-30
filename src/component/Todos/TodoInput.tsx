@@ -8,10 +8,6 @@ interface IState {
   description: string
 }
 
-// interface ITodoInputProps {
-// 	addTodo: (payload:any) => any;
-// }
-
 class Todos extends Component<any, IState> {
   constructor(props:any) {
     super(props)

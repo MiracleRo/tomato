@@ -4,7 +4,7 @@ import TomatosAction from './TomatosAction'
 import TomatoList from './TomatoList'
 import axios from '../../config/axios'
 import { connect } from 'react-redux'
-import { initTomatoes, addTomatoes, updateTomatoes } from '../../redux/action/tomatoes'
+import { addTomatoes, updateTomatoes } from '../../redux/action/tomatoes'
 import _ from 'lodash'
 import {format} from 'date-fns'
 
@@ -16,10 +16,6 @@ interface ITOMATOES {
 }
 
 class Tomatos extends Component<ITOMATOES, any> {
-
-  componentWillMount () {
-    this.init()
-  }
 
   get unfinishedTomato () {
     return this.props.tomatoes.filter(item => !item.description && !item.ended_at && !item.aborted)[0]
@@ -35,11 +31,6 @@ class Tomatos extends Component<ITOMATOES, any> {
   startAction = async () => {
     const res = await axios.post('tomatoes', {durtion: 1500000})
     this.props.addTomatoes(res.data.resource)
-  }
-
-  init = async () => {
-    const res = await axios.get('tomatoes')
-    this.props.initTomatoes(res.data.resources)
   }
 
   render() {
@@ -59,7 +50,6 @@ const mapStateToProps = (state: any, ownProps: any) => ({
 
 
 const mapDispatchToProps = {
-  initTomatoes,
   addTomatoes,
   updateTomatoes 
 }

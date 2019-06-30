@@ -4,11 +4,17 @@ import axios from '../../config/axios'
 import history from '../../config/history'
 import Todos from '../Todos/Todos'
 import Tomatos from '../Tomatos/Tomatos'
+import Statistics from '../Statistics/Statistics'
+import { connect } from 'react-redux'
+import { initTodo } from '../../redux/action/todos'
+import { initTomatoes } from '../../redux/action/tomatoes'
 
 import './Index.scss'
 
 interface IRouter {
-  history: any;
+  history: any
+  initTodo: (payload: any) => void
+  initTomatoes: (payload: any) => void
 }
 
 interface IUser {
@@ -42,9 +48,34 @@ class Index extends Component<IRouter, IUser> {
   }
 
   async componentWillMount () {
+    await this.initUser()
+    await this.getTodos()
+    await this.getTomatoes() 
+  }
+
+  initUser = async () => {
     const res = await axios.get('/me')
     this.setState({user: res.data})
   }
+
+  getTodos = async () => {
+		try{
+			const response = await axios.get('todos')
+			const todos = response.data.resources.map((t: any)=>Object.assign({},t,{editing: false}))
+			this.props.initTodo(todos)
+		}catch (e) {
+			throw new Error(e)
+		}
+	}
+
+  getTomatoes = async ()=>{
+		try {
+			const response = await axios.get('tomatoes')
+			this.props.initTomatoes(response.data.resources)
+		}catch (e) {
+			throw new Error(e)
+		}
+	}
 
   render() {
     return (
@@ -62,10 +93,25 @@ class Index extends Component<IRouter, IUser> {
         <main>
           <Tomatos/>
           <Todos/>
-        </main> 
+        </main>
+        <div className="Statistics">
+          <Statistics />
+        </div> 
       </div>
     );
   }
 }
 
-export default Index;
+const mapStateToProps = (state: any, ownProps: any) => ({
+	...ownProps
+})
+
+const mapDispatchToProps = {
+  initTodo,
+  initTomatoes
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Index)
