@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Input, Icon } from 'antd';
 import { connect } from 'react-redux'
-import { addTodo } from '../../redux/action'
+import { addTodo } from '../../redux/action/todos'
 import axios from '../../config/axios'
 
 interface IState {

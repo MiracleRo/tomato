@@ -3,7 +3,7 @@ import TodoInput from './TodoInput'
 import TodoItem from './TodoItem'
 import axios from '../../config/axios'
 import { connect } from 'react-redux'
-import { initTodo } from '../../redux/action'
+import { initTodo } from '../../redux/action/todos'
 
 import './Todos.scss'
 
