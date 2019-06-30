@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import './CountDown.scss'
 
 interface ICountDown {
   countdown: number
   onFinish: () => void
+  duration: number
 }
 
 interface ICountDownState {
@@ -44,8 +46,12 @@ class CountDown extends Component<ICountDown, ICountDownState> {
   }
 
   render() {
+    const percent = 1 - this.state.timer / this.props.duration
     return (
-      <div>{this.countDown}</div>
+      <div className="CountDown">
+				<span className="restTime">{this.countDown}</span>
+				<div className="progress" style={{width: `${percent * 100}%`}}/>
+			</div>
     )
   }
 }

@@ -19,7 +19,7 @@ class Tomatos extends Component<ITOMATOES, any> {
   }
 
   get unfinishedTomato () {
-    return this.props.tomatoes.filter(item => !item.description && !item.ended_at)[0]
+    return this.props.tomatoes.filter(item => !item.description && !item.ended_at && !item.aborted)[0]
   }
 
   startAction = async () => {
