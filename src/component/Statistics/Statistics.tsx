@@ -4,7 +4,7 @@ import Polygon from './Polygon'
 import {format} from "date-fns";
 import _ from 'lodash'
 import './Statistics.scss'
-import TodoHistory from './TodoHistory'
+import TodoHistory from './TodoHistory/TodoHistory'
 
 interface IStatProps {
   todos: any[]
