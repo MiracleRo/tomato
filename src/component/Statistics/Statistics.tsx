@@ -4,6 +4,7 @@ import Polygon from './Polygon'
 import {format} from "date-fns";
 import _ from 'lodash'
 import './Statistics.scss'
+import TodoHistory from './TodoHistory'
 
 interface IStatProps {
   todos: any[]
@@ -33,6 +34,7 @@ class Statistics extends Component<IStatProps> {
             <Polygon data={this.dailyTodos} totalFinishedCount={this.finishedTodos.length} />
 					</li>
 				</ul>
+				<TodoHistory />
 			</div>
     )
   }
