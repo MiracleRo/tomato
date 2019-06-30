@@ -9,3 +9,6 @@ export const UPDATE_TODO = 'UPDATE_TODO'
 export const ADD_TOMATOES = 'ADD_TOMATOES'
 
 export const INIT_TOMATOES = 'INIT_TOMATOES'
+
+export const UPDATE_TOMATOES = 'UPDATE_TOMATOES'
+

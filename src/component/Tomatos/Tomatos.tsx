@@ -3,11 +3,12 @@ import './Tomato.scss'
 import TomatosAction from './TomatosAction'
 import axios from '../../config/axios'
 import { connect } from 'react-redux'
-import { initTomatoes, addTomatoes } from '../../redux/action/tomatoes'
+import { initTomatoes, addTomatoes, updateTomatoes } from '../../redux/action/tomatoes'
 
 interface ITOMATOES {
   addTomatoes: (payload: any) => void
   initTomatoes: (payload: any) => void
+  updateTomatoes: (payload: any) => void
   tomatoes: any[]
 }
 
@@ -24,7 +25,6 @@ class Tomatos extends Component<ITOMATOES, any> {
   startAction = async () => {
     const res = await axios.post('tomatoes', {durtion: 1500000})
     this.props.addTomatoes(res.data.resource)
-    console.log(this.props.tomatoes)
   }
 
   init = async () => {
@@ -35,7 +35,7 @@ class Tomatos extends Component<ITOMATOES, any> {
   render() {
     return (
       <div className="tomato">
-        <TomatosAction unfinishedTomato={this.unfinishedTomato} startAction={this.startAction} />
+        <TomatosAction updateTomatoes={this.props.updateTomatoes} unfinishedTomato={this.unfinishedTomato} startAction={this.startAction} />
       </div>
     );
   }
@@ -49,7 +49,8 @@ const mapStateToProps = (state: any, ownProps: any) => ({
 
 const mapDispatchToProps = {
   initTomatoes,
-  addTomatoes 
+  addTomatoes,
+  updateTomatoes 
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Tomatos)
