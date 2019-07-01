@@ -2,6 +2,7 @@
   "name": "tomato",
   "version": "0.1.0",
   "private": true,
+  "homepage" : "http://MiracleRo.github.io/tomato",
   "dependencies": {
     "@types/lodash": "^4.14.135",
     "@types/react-redux": "^7.1.0",
@@ -12,6 +13,7 @@
     "classnames": "^2.2.6",
     "customize-cra": "^0.2.13",
     "date-fns": "^1.30.1",
+    "gh-pages": "^2.0.1",
     "history": "^4.9.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -24,7 +26,9 @@
     "start": "react-scripts-ts-antd start",
     "build": "react-scripts-ts-antd build",
     "test": "react-scripts-ts-antd test --env=jsdom",
-    "eject": "react-scripts-ts-antd eject"
+    "eject": "react-scripts-ts-antd eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "devDependencies": {
     "@types/classnames": "^2.2.8",
