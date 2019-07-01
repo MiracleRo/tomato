@@ -55,7 +55,7 @@ class TomatosAction extends Component<ITomatoActionProps, IActionState> {
 
   abortTomato = () => {
     this.updateTomato({aborted: true})
-		document.title = '饥人谷番茄APP'
+		document.title = '番茄APP'
   } 
 
   putDescription = (description: string) => {
