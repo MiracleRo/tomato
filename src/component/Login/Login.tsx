@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input, Button, Icon } from 'antd';
+import { Input, Button, Icon, message } from 'antd';
 import axios from '../../config/axios'
 import { Link } from 'react-router-dom'
 import './Login.scss'
@@ -34,6 +34,8 @@ class Login extends Component<any, ILogin> {
       })
       if (res.status === 200) {
         this.props.history.push('/')
+      } else {
+        message.error('账号或密码错误!')
       }
     } catch (e) {
       console.log(e)
